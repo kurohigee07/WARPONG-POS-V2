@@ -3,9 +3,6 @@
 .env.local
 .env.*.local
 
-# Node modules
-node_modules/
-
 # Logs
 logs
 *.log
@@ -22,3 +19,7 @@ pids
 # Database
 db.json
 *.db
+
+# Build outputs
+dist/
+build/
