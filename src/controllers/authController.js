@@ -1,4 +1,3 @@
-// src/controllers/authController.js
 const dbService = require('../services/databaseService');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -6,23 +5,20 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET || 'rahasia-default-kalian-ganti-yah';
 
 const authController = {
-    // POST /api/register
+    // POST /api/auth/register
     register: async (req, res) => {
         try {
             const { username, password, nama } = req.body;
 
-            // Validasi input sederhana
             if (!username || !password) {
                 return res.status(400).json({ success: false, message: 'Username dan password wajib diisi' });
             }
 
-            // Cek apakah user sudah ada
             const existingUser = dbService.findUserByUsername(username);
             if (existingUser) {
                 return res.status(409).json({ success: false, message: 'Username sudah digunakan' });
             }
 
-            // Buat user baru
             const newUser = dbService.createUser({ username, password, nama });
             if (newUser) {
                 res.status(201).json({ success: true, message: 'Registrasi berhasil', user: newUser });
@@ -35,7 +31,7 @@ const authController = {
         }
     },
 
-    // POST /api/login
+    // POST /api/auth/login
     login: async (req, res) => {
         try {
             const { username, password } = req.body;
@@ -54,17 +50,14 @@ const authController = {
                 return res.status(401).json({ success: false, message: 'Username atau password salah' });
             }
 
-            // Update status user
             dbService.updateUserStatus(username, 'online');
 
-            // Buat token JWT
             const token = jwt.sign(
                 { id: user.id, username: user.username },
                 JWT_SECRET,
                 { expiresIn: '7d' }
             );
 
-            // Kirim data user tanpa password
             const { password: _, ...userWithoutPassword } = user;
             res.json({
                 success: true,
@@ -79,7 +72,7 @@ const authController = {
         }
     },
 
-    // POST /api/logout (opsional, untuk update status)
+    // POST /api/auth/logout (TAMBAHKAN INI)
     logout: (req, res) => {
         const username = req.user?.username;
         if (username) {
