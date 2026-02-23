@@ -14,7 +14,6 @@ const socketHandler = require('./socket');
 
 // Import Middleware
 const errorHandler = require('./middlewares/errorHandler');
-const authMiddleware = require('./middlewares/authMiddleware');
 
 const app = express();
 const server = http.createServer(app);
@@ -30,7 +29,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
+// Routes - PASTIKAN SEMUA UDAH DI-REGISTER
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/location', locationRoutes);
@@ -45,7 +44,7 @@ app.get('/', (req, res) => {
         message: '🚀 API WARPONG-POS Re-engineered',
         version: '2.0.0',
         endpoints: {
-            auth: '/api/auth (login, register)',
+            auth: '/api/auth (login, register, logout)',
             users: '/api/users',
             location: '/api/location',
             messages: '/api/messages/:to'
