@@ -147,7 +147,6 @@
             display: none;
         }
 
-        /* Silver accent */
         .silver-line {
             height: 1px;
             background: linear-gradient(90deg, transparent, #3f4550, #7e8798, #3f4550, transparent);
@@ -172,8 +171,8 @@
             <!-- Login Form -->
             <div id="loginForm">
                 <div class="input-group">
-                    <label>Username</label>
-                    <input type="text" id="username" placeholder="cth: kurohige" autocomplete="off">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="cth: teman@warpong.com" autocomplete="off">
                 </div>
                 <div class="input-group">
                     <label>Password</label>
@@ -188,8 +187,8 @@
             <!-- Register Form -->
             <div id="registerForm" class="hidden">
                 <div class="input-group">
-                    <label>Username</label>
-                    <input type="text" id="regUsername" placeholder="pilih username">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" placeholder="email kamu">
                 </div>
                 <div class="input-group">
                     <label>Nama panggilan</label>
@@ -208,11 +207,38 @@
         </div>
     </div>
 
+    <!-- ============================================ -->
+    <!-- 🟢 TARUH SEMUA SCRIPT DI BAWAH SINI, SEBELUM PENUTUP BODY -->
+    <!-- ============================================ -->
+
+    <!-- 1. Firebase SDK (WAJIB) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
     <script>
         // ============================================
-        // GANTI INI DENGAN URL BACKEND V2 LU
+        // 2. ISI KONFIGURASI FIREBASE LU DI SINI
+        //    (GANTI '...' DENGAN PUNYA LU)
         // ============================================
-        const API_URL = 'https://warpongposv2-xilh17tq.b4a.run';
+        const firebaseConfig = {
+            apiKey: "ISI_API_KEY_LU",
+            authDomain: "ISI_AUTH_DOMAIN_LU",
+            databaseURL: "ISI_DATABASE_URL_LU",
+            projectId: "warpongposv2",
+            storageBucket: "ISI_STORAGE_BUCKET_LU",
+            messagingSenderId: "ISI_MESSAGING_SENDER_ID_LU",
+            appId: "ISI_APP_ID_LU"
+        };
+
+        // Inisialisasi Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        // ============================================
+        // 3. FUNGSI LOGIN & REGISTER PAKE FIREBASE
+        // ============================================
 
         // Toggle form login/register
         function toggleForm(showRegister) {
@@ -220,71 +246,74 @@
             document.getElementById('registerForm').classList.toggle('hidden', !showRegister);
         }
 
-        // Handle Login
-        async function handleLogin() {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
-
-            if (!username || !password) {
-                alert('Isi username dan password dulu bos!');
-                return;
-            }
-
-            try {
-                const res = await fetch(API_URL + '/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
-
-                const data = await res.json();
-                console.log('Login response:', data);
-
-                if (data.success) {
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    window.location.href = 'dashboard.html';
-                } else {
-                    alert('Login gagal: ' + (data.message || 'Username/password salah'));
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                alert('Gagal konek ke server. Cek backend');
-            }
-        }
-
-        // Handle Register
+        // REGISTER
         async function handleRegister() {
-            const username = document.getElementById('regUsername').value.trim();
-            const nama = document.getElementById('regNama').value.trim();
-            const password = document.getElementById('regPassword').value.trim();
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const nama = document.getElementById('regNama').value;
 
-            if (!username || !nama || !password) {
+            if (!email || !password || !nama) {
                 alert('Isi semua data dulu bos!');
                 return;
             }
 
             try {
-                const res = await fetch(API_URL + '/api/auth/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password, nama })
+                // Buat user di Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                // Simpan data tambahan (nama) ke Realtime Database
+                await database.ref('users/' + user.uid).set({
+                    nama: nama,
+                    email: email,
+                    status: 'online',
+                    avatar: `https://ui-avatars.com/api/?name=${nama}&background=1DB954&color=fff`
                 });
 
-                const data = await res.json();
-                console.log('Register response:', data);
-
-                if (data.success) {
-                    alert('Register berhasil! Silakan login.');
-                    toggleForm(false);
-                } else {
-                    alert('Register gagal: ' + (data.message || 'Username sudah dipakai'));
-                }
+                alert('Daftar berhasil! Silakan login.');
+                toggleForm(false); // Balik ke form login
             } catch (error) {
-                console.error('Register error:', error);
-                alert('Gagal konek ke server. Cek backend');
+                alert(error.message);
+            }
+        }
+
+        // LOGIN
+        async function handleLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                alert('Isi email dan password dulu bos!');
+                return;
+            }
+
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                // Update status user jadi online
+                await database.ref('users/' + user.uid).update({
+                    status: 'online'
+                });
+
+                // Ambil data user dari database
+                const snapshot = await database.ref('users/' + user.uid).once('value');
+                const userData = snapshot.val();
+
+                // Simpan data user di localStorage (buat dipake di dashboard)
+                localStorage.setItem('user', JSON.stringify({
+                    uid: user.uid,
+                    email: user.email,
+                    nama: userData.nama,
+                    avatar: userData.avatar
+                }));
+
+                // Redirect ke dashboard
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                alert('Login gagal: ' + error.message);
             }
         }
     </script>
 </body>
-  </html>
+</html>
