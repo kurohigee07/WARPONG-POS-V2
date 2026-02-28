@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>WARPONG · dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -12,28 +12,37 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background: #0b0b0b;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0b0b0b;
             color: #fff;
-            height: 100vh;
-            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .app {
             display: flex;
-            height: 100vh;
             width: 100vw;
+            height: 100vh;
+            max-width: 100%;
+            max-height: 100%;
         }
 
         /* SIDEBAR KIRI */
         .sidebar {
-            width: 280px;
+            width: 260px;
             background: #121315;
             border-right: 1px solid #2a2d33;
             display: flex;
             flex-direction: column;
             flex-shrink: 0;
+            overflow: hidden;
         }
 
         .sidebar-header {
@@ -43,7 +52,7 @@
 
         .sidebar-header h2 {
             font-weight: 600;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             letter-spacing: -0.3px;
             background: linear-gradient(to right, #fff, #a0aaba);
             -webkit-background-clip: text;
@@ -52,14 +61,14 @@
 
         .sidebar-header span {
             color: #1DB954;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             margin-left: 4px;
         }
 
         .online-counter {
             background: #1a1c22;
             margin: 0.8rem 1rem;
-            padding: 0.6rem 1rem;
+            padding: 0.5rem 1rem;
             border-radius: 40px;
             display: flex;
             justify-content: space-between;
@@ -98,7 +107,7 @@
             background: #1a1c22;
             border: 1px solid #2f323a;
             color: #e2e8f0;
-            padding: 0.7rem;
+            padding: 0.6rem;
             border-radius: 40px;
             font-weight: 500;
             cursor: pointer;
@@ -108,7 +117,7 @@
             justify-content: center;
             gap: 6px;
             flex-shrink: 0;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .broadcast-btn:hover {
@@ -126,8 +135,8 @@
         .user-item {
             background: #1a1c22;
             border: 1px solid #2f323a;
-            border-radius: 14px;
-            padding: 0.7rem;
+            border-radius: 12px;
+            padding: 0.6rem;
             margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
@@ -147,9 +156,9 @@
         }
 
         .avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 38px;
+            width: 36px;
+            height: 36px;
+            border-radius: 36px;
             background: #262a33;
             border: 2px solid #3f4550;
             flex-shrink: 0;
@@ -159,7 +168,7 @@
             justify-content: center;
             font-weight: bold;
             color: white;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .avatar img {
@@ -177,14 +186,14 @@
             font-weight: 600;
             color: #fff;
             margin-bottom: 2px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .user-status {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: #8f99a8;
             display: flex;
             align-items: center;
@@ -210,56 +219,61 @@
             align-items: center;
             justify-content: center;
             min-width: 0;
+            padding: 1rem;
         }
 
         .placeholder-message {
             text-align: center;
             color: #4b5363;
             background: #1a1c22;
-            padding: 1.5rem 2rem;
-            border-radius: 18px;
+            padding: 1.2rem 1.5rem;
+            border-radius: 16px;
             border: 1px solid #2f323a;
+            max-width: 90%;
         }
 
         .placeholder-message i {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: #1DB954;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
             display: block;
             opacity: 0.7;
         }
 
         .placeholder-message p {
             color: #8f99a8;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            white-space: nowrap;
         }
 
         .placeholder-message small {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: #4b5363;
             display: block;
-            margin-top: 0.5rem;
+            margin-top: 0.4rem;
         }
 
-        /* CHAT PANEL - FIX TOMBOL KETIK */
+        /* CHAT PANEL */
         .chat-panel {
-            width: 280px;
+            width: 260px;
             background: #121315;
             border-left: 1px solid #2a2d33;
             display: flex;
             flex-direction: column;
             flex-shrink: 0;
+            overflow: hidden;
         }
 
         .chat-header {
-            padding: 1rem 1rem;
+            padding: 0.8rem 1rem;
             border-bottom: 1px solid #26292f;
             font-weight: 500;
             color: #ccd6e3;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
+            gap: 6px;
+            font-size: 0.85rem;
+            flex-shrink: 0;
         }
 
         .chat-header i {
@@ -269,7 +283,11 @@
         .chat-header span {
             color: #1DB954;
             margin-left: auto;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            max-width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .chat-messages {
@@ -278,16 +296,16 @@
             padding: 0.8rem;
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
+            gap: 0.5rem;
         }
 
         .message {
-            max-width: 80%;
-            padding: 0.6rem 0.9rem;
-            border-radius: 16px;
+            max-width: 85%;
+            padding: 0.5rem 0.8rem;
+            border-radius: 14px;
             background: #1a1c22;
             border: 1px solid #2f323a;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             align-self: flex-start;
             color: #e2e8f0;
             word-break: break-word;
@@ -301,11 +319,12 @@
         }
 
         .chat-input-area {
-            padding: 0.8rem;
+            padding: 0.6rem 0.8rem;
             border-top: 1px solid #26292f;
             display: flex;
-            gap: 6px;
+            gap: 4px;
             background: #121315;
+            flex-shrink: 0;
         }
 
         .chat-input-area input {
@@ -314,10 +333,10 @@
             background: #1a1c22;
             border: 1px solid #2f323a;
             border-radius: 30px;
-            padding: 0.7rem 1rem;
+            padding: 0.6rem 0.8rem;
             color: #fff;
             outline: none;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .chat-input-area input:focus {
@@ -332,13 +351,13 @@
             background: #1DB954;
             border: none;
             border-radius: 30px;
-            width: 44px;
+            width: 40px;
             color: #0b0b0b;
             font-weight: bold;
             cursor: pointer;
             transition: 0.2s;
             flex-shrink: 0;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         .chat-input-area button:hover:not(:disabled) {
@@ -353,80 +372,103 @@
         .loading {
             text-align: center;
             color: #4b5363;
-            padding: 2rem;
-            font-size: 0.85rem;
+            padding: 1.5rem;
+            font-size: 0.75rem;
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .sidebar, .chat-panel {
-                width: 250px;
+        /* RESPONSIVE KETAT */
+        @media (max-width: 640px) {
+            .sidebar {
+                width: 240px;
+            }
+            .chat-panel {
+                width: 240px;
+            }
+            .sidebar-header h2 {
+                font-size: 1.2rem;
+            }
+            .online-counter .label {
+                font-size: 0.75rem;
             }
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 480px) {
             .app {
                 flex-direction: column;
             }
             .sidebar {
                 width: 100%;
                 height: auto;
-                max-height: 35vh;
+                max-height: 28vh;
                 border-right: none;
                 border-bottom: 1px solid #2a2d33;
             }
             .center-area {
                 height: 25vh;
-                min-height: 120px;
-                border-bottom: 1px solid #2a2d33;
+                min-height: 100px;
+                padding: 0.5rem;
             }
             .chat-panel {
                 width: 100%;
-                height: 40vh;
+                height: 47vh;
                 border-left: none;
                 border-top: 1px solid #2a2d33;
             }
             .user-list {
                 display: flex;
                 overflow-x: auto;
-                gap: 0.5rem;
-                padding: 0 0.8rem 0.5rem;
-            }
-            .user-item {
-                min-width: 140px;
-                margin-bottom: 0;
-                flex-shrink: 0;
-            }
-            .chat-input-area {
-                padding: 0.6rem;
-            }
-            .chat-input-area input {
-                padding: 0.6rem 0.9rem;
-            }
-            .chat-input-area button {
-                width: 40px;
-            }
-        }
-
-        /* LAYAR SANGAT KECIL */
-        @media (max-width: 380px) {
-            .sidebar {
-                max-height: 30vh;
+                gap: 0.4rem;
+                padding: 0 0.6rem 0.4rem;
+                white-space: nowrap;
             }
             .user-item {
                 min-width: 120px;
+                margin-bottom: 0;
+                flex-shrink: 0;
                 padding: 0.5rem;
             }
+            .placeholder-message {
+                padding: 0.8rem 1rem;
+            }
+            .placeholder-message i {
+                font-size: 1.5rem;
+            }
+            .placeholder-message p {
+                font-size: 0.7rem;
+            }
+            .placeholder-message small {
+                font-size: 0.55rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .user-item {
+                min-width: 100px;
+                padding: 0.4rem;
+            }
             .avatar {
-                width: 32px;
-                height: 32px;
-                font-size: 0.8rem;
+                width: 30px;
+                height: 30px;
+                font-size: 0.7rem;
             }
             .user-name {
+                font-size: 0.75rem;
+            }
+            .user-status {
+                font-size: 0.55rem;
+            }
+            .chat-input-area input {
+                padding: 0.5rem 0.6rem;
+                font-size: 0.7rem;
+            }
+            .chat-input-area button {
+                width: 36px;
                 font-size: 0.8rem;
             }
-            .chat-panel {
-                height: 45vh;
+            .message {
+                max-width: 90%;
+                padding: 0.4rem 0.6rem;
+                font-size: 0.7rem;
             }
         }
     </style>
@@ -450,7 +492,7 @@
             </div>
 
             <div class="user-list" id="userList">
-                <!-- User items akan diisi JavaScript -->
+                <!-- JS akan mengisi -->
             </div>
         </div>
 
@@ -482,13 +524,13 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK (tetep dipasang buat nanti) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <script>
-        // KONFIGURASI FIREBASE - ISI DENGAN PUNYA LU
+        // KONFIGURASI FIREBASE - ISI NANTI
         const firebaseConfig = {
             apiKey: "ISI_API_KEY_LU",
             authDomain: "ISI_AUTH_DOMAIN_LU",
@@ -499,34 +541,26 @@
             appId: "ISI_APP_ID_LU"
         };
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
-
-        const currentUser = JSON.parse(localStorage.getItem('user')) || { 
-            uid: 'guest', 
-            nama: 'Guest',
-            avatar: 'https://ui-avatars.com/api/?name=Guest&background=1DB954&color=fff'
-        };
-        
-        let selectedUser = null;
+        // Uncomment nanti kalo udah siap
+        // firebase.initializeApp(firebaseConfig);
+        // const auth = firebase.auth();
+        // const database = firebase.database();
 
         // Data dummy user
         const dummyUsers = [
-            { uid: 'user1', nama: 'Budi', status: 'online' },
-            { uid: 'user2', nama: 'Ani', status: 'offline' },
-            { uid: 'user3', nama: 'Charlie', status: 'online' }
+            { uid: 'user1', nama: 'Budi', status: 'online', initial: 'BU' },
+            { uid: 'user2', nama: 'Ani', status: 'offline', initial: 'AN' },
+            { uid: 'user3', nama: 'Charlie', status: 'online', initial: 'CH' }
         ];
 
-        let onlineCount = dummyUsers.filter(u => u.status === 'online').length;
-        document.getElementById('onlineCount').innerText = onlineCount;
+        let selectedUser = null;
 
         // Render user list
         const userList = document.getElementById('userList');
         userList.innerHTML = dummyUsers.map(user => `
             <div class="user-item" onclick="selectUser('${user.uid}', '${user.nama}')">
                 <div class="avatar">
-                    ${user.nama.charAt(0).toUpperCase()}
+                    ${user.initial}
                 </div>
                 <div class="user-info">
                     <div class="user-name">${user.nama}</div>
