@@ -140,6 +140,11 @@
             background: #20232a;
         }
 
+        .user-item.selected {
+            background: #20232a;
+            border-color: #1DB954;
+        }
+
         .avatar {
             width: 42px;
             height: 42px;
@@ -394,7 +399,7 @@
 
             <div class="online-counter">
                 <span class="label"><span class="dot"></span> Online sekarang</span>
-                <span class="count" id="onlineCount">0</span>
+                <span class="count" id="onlineCount">2</span>
             </div>
 
             <div class="broadcast-btn" onclick="broadcastNgopi()">
@@ -402,7 +407,40 @@
             </div>
 
             <div class="user-list" id="userList">
-                <div class="loading">Memuat anggota...</div>
+                <!-- Data dummy biar langsung keliatan -->
+                <div class="user-item" onclick="selectUser('user1', 'Budi')">
+                    <div class="avatar">
+                        <img src="https://ui-avatars.com/api/?name=Budi&background=1DB954&color=fff" alt="avatar">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Budi</div>
+                        <div class="user-status">
+                            <span class="status-dot"></span> online
+                        </div>
+                    </div>
+                </div>
+                <div class="user-item" onclick="selectUser('user2', 'Ani')">
+                    <div class="avatar">
+                        <img src="https://ui-avatars.com/api/?name=Ani&background=1DB954&color=fff" alt="avatar">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Ani</div>
+                        <div class="user-status">
+                            <span class="status-dot offline"></span> offline
+                        </div>
+                    </div>
+                </div>
+                <div class="user-item" onclick="selectUser('user3', 'Charlie')">
+                    <div class="avatar">
+                        <img src="https://ui-avatars.com/api/?name=Charlie&background=1DB954&color=fff" alt="avatar">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Charlie</div>
+                        <div class="user-status">
+                            <span class="status-dot"></span> online
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -434,13 +472,13 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK (tetep dipasang buat nanti) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <script>
-        // KONFIGURASI FIREBASE - GANTI DENGAN PUNYA LU
+        // Firebase config - isi nanti
         const firebaseConfig = {
             apiKey: "ISI_API_KEY_LU",
             authDomain: "ISI_AUTH_DOMAIN_LU",
@@ -451,17 +489,14 @@
             appId: "ISI_APP_ID_LU"
         };
 
+        // Init Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const database = firebase.database();
 
-        const currentUser = JSON.parse(localStorage.getItem('user'));
-        if (!currentUser) {
-            window.location.href = 'index.html';
-        }
-
+        const currentUser = JSON.parse(localStorage.getItem('user')) || { uid: 'guest', nama: 'Guest' };
         let selectedUser = null;
-        let onlineUsers = new Set();
+        let onlineUsers = new Set(['user1', 'user3']); // dummy online
 
         function updateOnlineCount() {
             document.getElementById('onlineCount').innerText = onlineUsers.size;
@@ -471,130 +506,29 @@
             alert('Fitur broadcast akan segera hadir!');
         }
 
-        // LOAD USERS
-        function loadUsers() {
-            const userList = document.getElementById('userList');
-            userList.innerHTML = '<div class="loading">Memuat anggota...</div>';
-
-            database.ref('users').on('value', (snapshot) => {
-                const users = snapshot.val();
-                userList.innerHTML = '';
-
-                if (!users) {
-                    userList.innerHTML = '<div class="loading">Belum ada anggota</div>';
-                    return;
-                }
-
-                onlineUsers.clear();
-
-                Object.keys(users).forEach(uid => {
-                    const u = users[uid];
-                    if (uid === currentUser.uid) {
-                        if (u.status === 'online') onlineUsers.add(uid);
-                        return;
-                    }
-
-                    const isOnline = u.status === 'online';
-                    if (isOnline) onlineUsers.add(uid);
-
-                    const div = document.createElement('div');
-                    div.className = 'user-item';
-                    div.setAttribute('data-user-id', uid);
-                    div.onclick = () => selectUser(uid, u.nama || u.email);
-
-                    div.innerHTML = `
-                        <div class="avatar">
-                            <img src="${u.avatar || 'https://ui-avatars.com/api/?name=' + (u.nama || u.email) + '&background=1DB954&color=fff'}" />
-                        </div>
-                        <div class="user-info">
-                            <div class="user-name">${u.nama || u.email}</div>
-                            <div class="user-status">
-                                <span class="status-dot ${isOnline ? '' : 'offline'}"></span>
-                                ${isOnline ? 'online' : 'offline'}
-                            </div>
-                        </div>
-                    `;
-                    userList.appendChild(div);
-                });
-
-                updateOnlineCount();
-            });
-        }
-        loadUsers();
-
-        function selectUser(uid, displayName) {
+        function selectUser(uid, name) {
             selectedUser = uid;
-            document.getElementById('chatWith').innerText = displayName;
+            document.getElementById('chatWith').innerText = name;
 
             document.querySelectorAll('.user-item').forEach(el => {
-                el.style.background = '';
-                el.style.borderColor = '';
+                el.classList.remove('selected');
             });
-            const selectedEl = document.querySelector(`.user-item[data-user-id="${uid}"]`);
-            if (selectedEl) {
-                selectedEl.style.background = '#20232a';
-                selectedEl.style.borderColor = '#1DB954';
-            }
+            event.currentTarget.classList.add('selected');
 
             document.getElementById('chatInput').disabled = false;
             document.getElementById('sendBtn').disabled = false;
-            loadChat(uid);
-        }
-
-        function loadChat(toUid) {
+            
+            // Simulasi chat masuk
             const chatDiv = document.getElementById('chatMessages');
-            chatDiv.innerHTML = '<div class="loading">Memuat pesan...</div>';
-
-            database.ref('messages').orderByChild('timestamp').on('value', (snapshot) => {
-                const allMessages = snapshot.val();
-                chatDiv.innerHTML = '';
-
-                if (!allMessages) {
-                    chatDiv.innerHTML = '<div class="loading">Pilih user untuk mulai chat</div>';
-                    return;
-                }
-
-                const myUid = currentUser.uid;
-                const messages = [];
-
-                Object.keys(allMessages).forEach(key => {
-                    const msg = allMessages[key];
-                    if ((msg.from === myUid && msg.to === toUid) || (msg.from === toUid && msg.to === myUid)) {
-                        messages.push(msg);
-                    }
-                });
-
-                messages.sort((a, b) => a.timestamp - b.timestamp);
-
-                if (messages.length === 0) {
-                    chatDiv.innerHTML = '<div class="loading">Pilih user untuk mulai chat</div>';
-                    return;
-                }
-
-                messages.forEach(msg => {
-                    const isMe = msg.from === myUid;
-                    const div = document.createElement('div');
-                    div.className = `message ${isMe ? 'own' : ''}`;
-                    div.innerText = msg.message;
-                    chatDiv.appendChild(div);
-                });
-
-                chatDiv.scrollTop = chatDiv.scrollHeight;
-            });
+            chatDiv.innerHTML = `
+                <div class="message">Halo, apa kabar?</div>
+                <div class="message own">Baik banget nih</div>
+            `;
         }
 
         function sendMessage() {
             const input = document.getElementById('chatInput');
             if (!selectedUser || !input.value.trim()) return;
-
-            const message = {
-                from: currentUser.uid,
-                to: selectedUser,
-                message: input.value,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
-            };
-
-            database.ref('messages').push(message);
 
             const chatDiv = document.getElementById('chatMessages');
             const div = document.createElement('div');
