@@ -2,14 +2,9 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>WARPONG · chat</title>
-    <!-- Font & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Leaflet (MAP) - SEMENTARA DI MATIKAN DULU -->
-    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> -->
     <style>
         /* Reset & Base */
         * {
@@ -19,8 +14,8 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0b0b0b;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #0f172a;
             color: #fff;
             height: 100vh;
             overflow: hidden;
@@ -30,159 +25,141 @@
             display: flex;
             height: 100vh;
             width: 100vw;
-            background: #0b0b0b;
             position: relative;
         }
 
-        /* SIDEBAR KIRI - DAFTAR USER */
+        /* ========== MOBILE-FIRST SIDEBAR ========== */
         .sidebar {
+            position: fixed;
+            left: -280px;
+            top: 0;
             width: 280px;
-            background: #121315;
-            border-right: 1px solid #2a2d33;
+            height: 100vh;
+            background: #1e293b;
+            border-right: 2px solid #3b9eff;
+            z-index: 2000;
+            transition: left 0.3s ease;
             display: flex;
             flex-direction: column;
-            flex-shrink: 0;
-            transition: left 0.3s ease;
+            box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar.active {
+            left: 0;
         }
 
         .sidebar-header {
-            padding: 1.5rem 1.2rem;
-            border-bottom: 1px solid #26292f;
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .sidebar-header h2 {
-            font-weight: 600;
-            font-size: 1.5rem;
-            letter-spacing: -0.02em;
-            background: linear-gradient(to right, #fff, #a0aaba);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 5px #3b9eff;
         }
 
         .sidebar-header span {
-            color: #1DB954;
-            font-size: 0.7rem;
-            margin-left: 4px;
+            color: #3b9eff;
+            font-size: 0.8rem;
         }
 
         .online-indicator {
-            background: #1a1c22;
-            margin: 1rem 1.2rem;
-            padding: 0.7rem 1.2rem;
-            border-radius: 40px;
+            background: #0f172a;
+            margin: 1rem;
+            padding: 0.7rem 1rem;
+            border-radius: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #2f323a;
-            flex-shrink: 0;
+            border: 1px solid #3b9eff;
         }
 
         .online-indicator .label {
-            color: #8f99a8;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            color: #94a3b8;
+            font-size: 0.9rem;
         }
 
         .dot {
             width: 8px;
             height: 8px;
-            border-radius: 10px;
-            background: #1DB954;
+            border-radius: 8px;
+            background: #3b9eff;
             display: inline-block;
+            margin-right: 6px;
         }
 
         .online-indicator .count {
-            background: #262a33;
-            color: #fff;
-            padding: 0.2rem 0.8rem;
-            border-radius: 40px;
+            background: #3b9eff;
+            color: white;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
             font-weight: 600;
-            font-size: 0.8rem;
         }
 
         .broadcast-btn {
-            margin: 0 1.2rem 1.2rem;
-            background: #1a1c22;
-            border: 1px solid #2f323a;
-            color: #e2e8f0;
-            padding: 0.9rem;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
+            margin: 0 1rem 1rem;
+            background: #0f172a;
+            border: 1px solid #3b9eff;
+            color: white;
+            padding: 0.8rem;
+            border-radius: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-
-        .broadcast-btn:hover {
-            background: #20232a;
-            border-color: #1DB954;
-            color: #fff;
+            gap: 8px;
+            cursor: pointer;
         }
 
         .user-list {
             flex: 1;
             overflow-y: auto;
-            padding: 0 1.2rem;
+            padding: 0 1rem;
         }
 
         .user-item {
-            background: #1a1c22;
-            border: 1px solid #2f323a;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             padding: 1rem;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.8rem;
             display: flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
         .user-item:hover {
-            border-color: #1DB954;
-            background: #20232a;
-            transform: translateX(4px);
+            border-color: #3b9eff;
         }
 
         .avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 44px;
-            background: #262a33;
-            border: 2px solid #3f4550;
-            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 48px;
+            background: #3b9eff;
         }
 
         .avatar img {
             width: 100%;
             height: 100%;
-            border-radius: 44px;
+            border-radius: 48px;
             object-fit: cover;
         }
 
         .user-info {
             flex: 1;
-            min-width: 0;
         }
 
         .user-name {
             font-weight: 600;
-            color: #fff;
-            margin-bottom: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 1rem;
         }
 
         .user-status {
-            font-size: 0.7rem;
-            color: #8f99a8;
+            font-size: 0.8rem;
+            color: #94a3b8;
             display: flex;
             align-items: center;
             gap: 4px;
@@ -192,39 +169,83 @@
             width: 6px;
             height: 6px;
             border-radius: 6px;
-            background: #1DB954;
+            background: #3b9eff;
         }
 
         .status-dot.offline {
-            background: #4b5363;
+            background: #64748b;
         }
 
-        /* CHAT PANEL (SEKARANG JADI KONTEN UTAMA) */
-        .chat-panel {
+        /* ========== MAIN CHAT AREA ========== */
+        .chat-area {
             flex: 1;
-            background: #0f0f10;
             display: flex;
             flex-direction: column;
-            min-width: 0; /* Penting buat flexbox */
+            background: #0b1120;
+            width: 100%;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Desktop adjustment */
+        @media (min-width: 1024px) {
+            .sidebar {
+                position: static;
+                left: 0;
+            }
+            .chat-area {
+                margin-left: 0;
+            }
         }
 
         .chat-header {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #26292f;
+            padding: 1rem 1rem 1rem 4rem;
+            background: #1e293b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #ccd6e3;
-            background: #121315;
+            min-height: 70px;
+        }
+
+        @media (min-width: 1024px) {
+            .chat-header {
+                padding-left: 1.5rem;
+            }
+        }
+
+        .menu-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            width: 45px;
+            height: 45px;
+            background: #1e293b;
+            border: 2px solid #3b9eff;
+            border-radius: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2500;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(59, 158, 255, 0.3);
+        }
+
+        @media (min-width: 1024px) {
+            .menu-toggle {
+                display: none;
+            }
         }
 
         .chat-header i {
-            color: #1DB954;
+            color: #3b9eff;
             font-size: 1.2rem;
         }
 
         .chat-header span {
-            color: #1DB954;
+            color: white;
             font-weight: 500;
             margin-left: auto;
         }
@@ -235,52 +256,49 @@
             padding: 1.5rem;
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
-            background: #0a0a0a;
+            gap: 1rem;
         }
 
         .message {
-            max-width: 70%;
+            max-width: 85%;
             padding: 0.8rem 1.2rem;
             border-radius: 24px;
             font-size: 0.95rem;
             line-height: 1.4;
-            word-break: break-word;
             align-self: flex-start;
-            background: #1a1c22;
-            border: 1px solid #2f323a;
+            background: #1e293b;
             color: #e2e8f0;
+            word-break: break-word;
         }
 
         .message.own {
             align-self: flex-end;
-            background: #1DB954;
-            border-color: #1DB954;
-            color: #0b0b0b;
-            font-weight: 500;
+            background: #3b9eff;
+            color: white;
+            border-bottom-right-radius: 4px;
         }
 
         .chat-input-area {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid #26292f;
+            padding: 1rem;
+            background: #1e293b;
             display: flex;
-            gap: 12px;
-            background: #121315;
+            gap: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .chat-input-area input {
             flex: 1;
-            background: #1a1c22;
-            border: 1px solid #2f323a;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 30px;
             padding: 0.8rem 1.2rem;
-            color: #fff;
+            color: white;
             outline: none;
             font-size: 1rem;
         }
 
         .chat-input-area input:focus {
-            border-color: #1DB954;
+            border-color: #3b9eff;
         }
 
         .chat-input-area input:disabled {
@@ -288,111 +306,53 @@
         }
 
         .chat-input-area button {
-            background: #1DB954;
+            background: #3b9eff;
             border: none;
             border-radius: 30px;
-            padding: 0 1.5rem;
-            color: #0b0b0b;
+            padding: 0 2rem;
+            color: white;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.95rem;
-        }
-
-        .chat-input-area button:hover:not(:disabled) {
-            background: #1ed760;
         }
 
         .chat-input-area button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
+            opacity: 0.4;
         }
 
         .loading {
             text-align: center;
-            color: #4b5363;
+            color: #64748b;
             padding: 2rem;
         }
 
-        /* TOMBOL MENU HP (SIDEBAR TOGGLE) */
-        .menu-toggle {
-            position: fixed;
-            top: 12px;
-            left: 12px;
-            width: 48px;
-            height: 48px;
-            background: #1a1c22;
-            border: 2px solid #1DB954;
-            border-radius: 48px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            color: #1DB954;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
-            transition: all 0.2s;
-        }
-
         .overlay {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(3px);
-            z-index: 1500;
-        }
-
-        /* RESPONSIVE HP */
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: flex;
-            }
-
-            .sidebar {
-                position: fixed;
-                left: -280px;
-                height: 100vh;
-                z-index: 1999;
-                box-shadow: 5px 0 20px rgba(0, 0, 0, 0.8);
-                border-right: 2px solid #1DB954;
-            }
-
-            .sidebar.active {
-                left: 0;
-            }
-
-            .overlay.active {
-                display: block;
-            }
-        }
-
-        /* MAP AREA - DI MATIKAN TOTAL DULU */
-        .map-container {
+            z-index: 1999;
             display: none;
         }
-        #map {
-            display: none;
-        }
-        .location-status {
-            display: none;
+
+        .overlay.active {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+    <div class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
     <div class="overlay" onclick="toggleSidebar()"></div>
 
     <div class="app">
-        <!-- SIDEBAR KIRI -->
+        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2>WARPONG</h2>
-                <span>● silver line</span>
+                <span>● private circle</span>
             </div>
 
             <div class="online-indicator">
@@ -409,8 +369,8 @@
             </div>
         </div>
 
-        <!-- CHAT PANEL (UTAMA) -->
-        <div class="chat-panel">
+        <!-- CHAT AREA -->
+        <div class="chat-area">
             <div class="chat-header">
                 <i class="fas fa-comment"></i>
                 <span id="chatWith">pilih user</span>
@@ -433,9 +393,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <script>
-        // ============================================
-        // 1. KONFIGURASI FIREBASE (GANTI DENGAN PUNYA LU)
-        // ============================================
+        // Konfigurasi Firebase (GANTI!)
         const firebaseConfig = {
             apiKey: "ISI_API_KEY_LU",
             authDomain: "ISI_AUTH_DOMAIN_LU",
@@ -446,64 +404,43 @@
             appId: "ISI_APP_ID_LU"
         };
 
-        // Init Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const database = firebase.database();
 
-        // ============================================
-        // 2. CEK LOGIN
-        // ============================================
+        // Cek login
         const currentUser = JSON.parse(localStorage.getItem('user'));
         if (!currentUser) {
             window.location.href = 'index.html';
         }
 
-        // ============================================
-        // 3. VARIABEL GLOBAL
-        // ============================================
         let selectedUser = null;
         let onlineUsers = new Set();
 
-        // ============================================
-        // 4. TOGGLE SIDEBAR (HP)
-        // ============================================
         function toggleSidebar() {
             document.querySelector('.sidebar').classList.toggle('active');
             document.querySelector('.overlay').classList.toggle('active');
         }
 
-        // ============================================
-        // 5. UPDATE ONLINE COUNT
-        // ============================================
         function updateOnlineCount() {
             document.getElementById('onlineCount').innerText = onlineUsers.size;
         }
 
-        // ============================================
-        // 6. BROADCAST NGOPI (SEMENTARA)
-        // ============================================
         function broadcastNgopi() {
-            const tempat = prompt('Mau ngopi dimana?');
-            if (tempat) {
-                alert(`Broadcast: ngopi yuk di ${tempat} ☕`);
-                // TODO: Implementasi broadcast ke semua user
-            }
+            alert('Fitur broadcast akan segera hadir!');
         }
 
-        // ============================================
-        // 7. LOAD DAFTAR USER DARI FIREBASE
-        // ============================================
+        // Load users
         function loadUsers() {
-            const userListDiv = document.getElementById('userList');
-            userListDiv.innerHTML = '<div class="loading">memuat circle …</div>';
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '<div class="loading">memuat circle …</div>';
 
             database.ref('users').on('value', (snapshot) => {
                 const users = snapshot.val();
-                userListDiv.innerHTML = '';
+                userList.innerHTML = '';
 
                 if (!users) {
-                    userListDiv.innerHTML = '<div class="loading">masih sepi …</div>';
+                    userList.innerHTML = '<div class="loading">masih sepi …</div>';
                     return;
                 }
 
@@ -511,7 +448,6 @@
 
                 Object.keys(users).forEach(uid => {
                     const u = users[uid];
-                    // Skip diri sendiri
                     if (uid === currentUser.uid) {
                         if (u.status === 'online') onlineUsers.add(uid);
                         return;
@@ -525,12 +461,12 @@
                     div.setAttribute('data-user-id', uid);
                     div.onclick = () => {
                         selectUser(uid, u.nama || u.email);
-                        if (window.innerWidth <= 768) toggleSidebar();
+                        if (window.innerWidth <= 1024) toggleSidebar();
                     };
 
                     div.innerHTML = `
                         <div class="avatar">
-                            <img src="${u.avatar || 'https://ui-avatars.com/api/?name=' + (u.nama || u.email) + '&background=1DB954&color=fff'}" />
+                            <img src="${u.avatar || `https://ui-avatars.com/api/?name=${u.nama || u.email}&background=3b9eff&color=fff`}" />
                         </div>
                         <div class="user-info">
                             <div class="user-name">${u.nama || u.email}</div>
@@ -540,7 +476,7 @@
                             </div>
                         </div>
                     `;
-                    userListDiv.appendChild(div);
+                    userList.appendChild(div);
                 });
 
                 updateOnlineCount();
@@ -548,33 +484,23 @@
         }
         loadUsers();
 
-        // ============================================
-        // 8. SELECT USER UNTUK CHAT
-        // ============================================
+        // Select user
         function selectUser(uid, displayName) {
             selectedUser = uid;
             document.getElementById('chatWith').innerText = displayName;
 
-            // Highlight user yang dipilih
             document.querySelectorAll('.user-item').forEach(el => {
                 el.style.background = '';
-                el.style.borderColor = '';
             });
-            const selectedEl = document.querySelector(`.user-item[data-user-id="${uid}"]`);
-            if (selectedEl) {
-                selectedEl.style.background = '#20232a';
-                selectedEl.style.borderColor = '#1DB954';
-            }
+            const selected = document.querySelector(`.user-item[data-user-id="${uid}"]`);
+            if (selected) selected.style.background = '#2d3a4f';
 
-            // Enable chat input
             document.getElementById('chatInput').disabled = false;
             document.getElementById('sendBtn').disabled = false;
             loadChat(uid);
         }
 
-        // ============================================
-        // 9. LOAD CHAT HISTORY
-        // ============================================
+        // Load chat
         function loadChat(toUid) {
             const chatDiv = document.getElementById('chatMessages');
             chatDiv.innerHTML = '<div class="loading">memuat pesan …</div>';
@@ -617,9 +543,7 @@
             });
         }
 
-        // ============================================
-        // 10. KIRIM PESAN
-        // ============================================
+        // Send message
         function sendMessage() {
             const input = document.getElementById('chatInput');
             if (!selectedUser || !input.value.trim()) return;
@@ -633,7 +557,6 @@
 
             database.ref('messages').push(message);
 
-            // Optimistic update
             const chatDiv = document.getElementById('chatMessages');
             const div = document.createElement('div');
             div.className = 'message own';
@@ -643,6 +566,13 @@
             chatDiv.scrollTop = chatDiv.scrollHeight;
         }
 
-        // ============================================
-        // 11. FITUR LOKASI (DI MATIKAN DULU)
-        // =
+        // Auto close sidebar on resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                document.querySelector('.sidebar').classList.remove('active');
+                document.querySelector('.overlay').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
