@@ -28,7 +28,7 @@
 
         /* SIDEBAR KIRI */
         .sidebar {
-            width: 300px;
+            width: 280px;
             background: #121315;
             border-right: 1px solid #2a2d33;
             display: flex;
@@ -37,13 +37,13 @@
         }
 
         .sidebar-header {
-            padding: 1.5rem 1.2rem;
+            padding: 1.2rem 1rem;
             border-bottom: 1px solid #26292f;
         }
 
         .sidebar-header h2 {
             font-weight: 600;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             letter-spacing: -0.3px;
             background: linear-gradient(to right, #fff, #a0aaba);
             -webkit-background-clip: text;
@@ -58,8 +58,8 @@
 
         .online-counter {
             background: #1a1c22;
-            margin: 1rem 1.2rem;
-            padding: 0.7rem 1.2rem;
+            margin: 0.8rem 1rem;
+            padding: 0.6rem 1rem;
             border-radius: 40px;
             display: flex;
             justify-content: space-between;
@@ -70,7 +70,7 @@
 
         .online-counter .label {
             color: #8f99a8;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -87,18 +87,18 @@
         .online-counter .count {
             background: #262a33;
             color: #fff;
-            padding: 0.2rem 0.8rem;
+            padding: 0.2rem 0.7rem;
             border-radius: 40px;
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
 
         .broadcast-btn {
-            margin: 0 1.2rem 1.2rem;
+            margin: 0 1rem 1rem;
             background: #1a1c22;
             border: 1px solid #2f323a;
             color: #e2e8f0;
-            padding: 0.9rem;
+            padding: 0.7rem;
             border-radius: 40px;
             font-weight: 500;
             cursor: pointer;
@@ -108,6 +108,7 @@
             justify-content: center;
             gap: 6px;
             flex-shrink: 0;
+            font-size: 0.9rem;
         }
 
         .broadcast-btn:hover {
@@ -119,18 +120,18 @@
         .user-list {
             flex: 1;
             overflow-y: auto;
-            padding: 0 1.2rem;
+            padding: 0 1rem;
         }
 
         .user-item {
             background: #1a1c22;
             border: 1px solid #2f323a;
-            border-radius: 16px;
-            padding: 0.9rem;
-            margin-bottom: 0.6rem;
+            border-radius: 14px;
+            padding: 0.7rem;
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -146,13 +147,19 @@
         }
 
         .avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 42px;
+            width: 38px;
+            height: 38px;
+            border-radius: 38px;
             background: #262a33;
             border: 2px solid #3f4550;
             flex-shrink: 0;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 0.9rem;
         }
 
         .avatar img {
@@ -170,14 +177,14 @@
             font-weight: 600;
             color: #fff;
             margin-bottom: 2px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .user-status {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #8f99a8;
             display: flex;
             align-items: center;
@@ -195,7 +202,7 @@
             background: #4b5363;
         }
 
-        /* AREA TENGAH - PLACEHOLDER */
+        /* AREA TENGAH */
         .center-area {
             flex: 1;
             background: #0b0b0b;
@@ -209,34 +216,34 @@
             text-align: center;
             color: #4b5363;
             background: #1a1c22;
-            padding: 2rem 2.5rem;
-            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            border-radius: 18px;
             border: 1px solid #2f323a;
         }
 
         .placeholder-message i {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             color: #1DB954;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             display: block;
             opacity: 0.7;
         }
 
         .placeholder-message p {
             color: #8f99a8;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .placeholder-message small {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #4b5363;
             display: block;
             margin-top: 0.5rem;
         }
 
-        /* CHAT PANEL KANAN */
+        /* CHAT PANEL - FIX TOMBOL KETIK */
         .chat-panel {
-            width: 300px;
+            width: 280px;
             background: #121315;
             border-left: 1px solid #2a2d33;
             display: flex;
@@ -245,13 +252,14 @@
         }
 
         .chat-header {
-            padding: 1.2rem 1.2rem;
+            padding: 1rem 1rem;
             border-bottom: 1px solid #26292f;
             font-weight: 500;
             color: #ccd6e3;
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 0.9rem;
         }
 
         .chat-header i {
@@ -261,25 +269,25 @@
         .chat-header span {
             color: #1DB954;
             margin-left: auto;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            padding: 1rem;
+            padding: 0.8rem;
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
+            gap: 0.6rem;
         }
 
         .message {
-            max-width: 85%;
-            padding: 0.7rem 1rem;
-            border-radius: 18px;
+            max-width: 80%;
+            padding: 0.6rem 0.9rem;
+            border-radius: 16px;
             background: #1a1c22;
             border: 1px solid #2f323a;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             align-self: flex-start;
             color: #e2e8f0;
             word-break: break-word;
@@ -293,21 +301,23 @@
         }
 
         .chat-input-area {
-            padding: 1rem;
+            padding: 0.8rem;
             border-top: 1px solid #26292f;
             display: flex;
-            gap: 8px;
+            gap: 6px;
+            background: #121315;
         }
 
         .chat-input-area input {
             flex: 1;
+            min-width: 0;
             background: #1a1c22;
             border: 1px solid #2f323a;
-            border-radius: 40px;
-            padding: 0.8rem 1rem;
+            border-radius: 30px;
+            padding: 0.7rem 1rem;
             color: #fff;
             outline: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .chat-input-area input:focus {
@@ -321,13 +331,14 @@
         .chat-input-area button {
             background: #1DB954;
             border: none;
-            border-radius: 40px;
-            width: 48px;
+            border-radius: 30px;
+            width: 44px;
             color: #0b0b0b;
             font-weight: bold;
             cursor: pointer;
             transition: 0.2s;
             flex-shrink: 0;
+            font-size: 1rem;
         }
 
         .chat-input-area button:hover:not(:disabled) {
@@ -343,12 +354,13 @@
             text-align: center;
             color: #4b5363;
             padding: 2rem;
+            font-size: 0.85rem;
         }
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
             .sidebar, .chat-panel {
-                width: 260px;
+                width: 250px;
             }
         }
 
@@ -364,13 +376,13 @@
                 border-bottom: 1px solid #2a2d33;
             }
             .center-area {
-                height: 30vh;
-                min-height: 150px;
+                height: 25vh;
+                min-height: 120px;
                 border-bottom: 1px solid #2a2d33;
             }
             .chat-panel {
                 width: 100%;
-                height: 35vh;
+                height: 40vh;
                 border-left: none;
                 border-top: 1px solid #2a2d33;
             }
@@ -378,12 +390,43 @@
                 display: flex;
                 overflow-x: auto;
                 gap: 0.5rem;
-                padding: 0 1rem 0.5rem;
+                padding: 0 0.8rem 0.5rem;
             }
             .user-item {
-                min-width: 160px;
+                min-width: 140px;
                 margin-bottom: 0;
                 flex-shrink: 0;
+            }
+            .chat-input-area {
+                padding: 0.6rem;
+            }
+            .chat-input-area input {
+                padding: 0.6rem 0.9rem;
+            }
+            .chat-input-area button {
+                width: 40px;
+            }
+        }
+
+        /* LAYAR SANGAT KECIL */
+        @media (max-width: 380px) {
+            .sidebar {
+                max-height: 30vh;
+            }
+            .user-item {
+                min-width: 120px;
+                padding: 0.5rem;
+            }
+            .avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
+            }
+            .user-name {
+                font-size: 0.8rem;
+            }
+            .chat-panel {
+                height: 45vh;
             }
         }
     </style>
@@ -407,40 +450,7 @@
             </div>
 
             <div class="user-list" id="userList">
-                <!-- Data dummy biar langsung keliatan -->
-                <div class="user-item" onclick="selectUser('user1', 'Budi')">
-                    <div class="avatar">
-                        <img src="https://ui-avatars.com/api/?name=Budi&background=1DB954&color=fff" alt="avatar">
-                    </div>
-                    <div class="user-info">
-                        <div class="user-name">Budi</div>
-                        <div class="user-status">
-                            <span class="status-dot"></span> online
-                        </div>
-                    </div>
-                </div>
-                <div class="user-item" onclick="selectUser('user2', 'Ani')">
-                    <div class="avatar">
-                        <img src="https://ui-avatars.com/api/?name=Ani&background=1DB954&color=fff" alt="avatar">
-                    </div>
-                    <div class="user-info">
-                        <div class="user-name">Ani</div>
-                        <div class="user-status">
-                            <span class="status-dot offline"></span> offline
-                        </div>
-                    </div>
-                </div>
-                <div class="user-item" onclick="selectUser('user3', 'Charlie')">
-                    <div class="avatar">
-                        <img src="https://ui-avatars.com/api/?name=Charlie&background=1DB954&color=fff" alt="avatar">
-                    </div>
-                    <div class="user-info">
-                        <div class="user-name">Charlie</div>
-                        <div class="user-status">
-                            <span class="status-dot"></span> online
-                        </div>
-                    </div>
-                </div>
+                <!-- User items akan diisi JavaScript -->
             </div>
         </div>
 
@@ -472,13 +482,13 @@
         </div>
     </div>
 
-    <!-- Firebase SDK (tetep dipasang buat nanti) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <script>
-        // Firebase config - isi nanti
+        // KONFIGURASI FIREBASE - ISI DENGAN PUNYA LU
         const firebaseConfig = {
             apiKey: "ISI_API_KEY_LU",
             authDomain: "ISI_AUTH_DOMAIN_LU",
@@ -489,18 +499,44 @@
             appId: "ISI_APP_ID_LU"
         };
 
-        // Init Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const database = firebase.database();
 
-        const currentUser = JSON.parse(localStorage.getItem('user')) || { uid: 'guest', nama: 'Guest' };
+        const currentUser = JSON.parse(localStorage.getItem('user')) || { 
+            uid: 'guest', 
+            nama: 'Guest',
+            avatar: 'https://ui-avatars.com/api/?name=Guest&background=1DB954&color=fff'
+        };
+        
         let selectedUser = null;
-        let onlineUsers = new Set(['user1', 'user3']); // dummy online
 
-        function updateOnlineCount() {
-            document.getElementById('onlineCount').innerText = onlineUsers.size;
-        }
+        // Data dummy user
+        const dummyUsers = [
+            { uid: 'user1', nama: 'Budi', status: 'online' },
+            { uid: 'user2', nama: 'Ani', status: 'offline' },
+            { uid: 'user3', nama: 'Charlie', status: 'online' }
+        ];
+
+        let onlineCount = dummyUsers.filter(u => u.status === 'online').length;
+        document.getElementById('onlineCount').innerText = onlineCount;
+
+        // Render user list
+        const userList = document.getElementById('userList');
+        userList.innerHTML = dummyUsers.map(user => `
+            <div class="user-item" onclick="selectUser('${user.uid}', '${user.nama}')">
+                <div class="avatar">
+                    ${user.nama.charAt(0).toUpperCase()}
+                </div>
+                <div class="user-info">
+                    <div class="user-name">${user.nama}</div>
+                    <div class="user-status">
+                        <span class="status-dot ${user.status === 'offline' ? 'offline' : ''}"></span>
+                        ${user.status}
+                    </div>
+                </div>
+            </div>
+        `).join('');
 
         function broadcastNgopi() {
             alert('Fitur broadcast akan segera hadir!');
@@ -518,9 +554,7 @@
             document.getElementById('chatInput').disabled = false;
             document.getElementById('sendBtn').disabled = false;
             
-            // Simulasi chat masuk
-            const chatDiv = document.getElementById('chatMessages');
-            chatDiv.innerHTML = `
+            document.getElementById('chatMessages').innerHTML = `
                 <div class="message">Halo, apa kabar?</div>
                 <div class="message own">Baik banget nih</div>
             `;
